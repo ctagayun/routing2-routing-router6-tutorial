@@ -35,6 +35,21 @@ Completed Code: https://github.com/the-road-to-learn-react/react-router-6-exampl
      so that there can be multiple Links in your application linking to the same Route.
  
  
-  4. Layout Routes, Index Routes, No Match Routes
+  4. LAYOUT ROUTES, INDEX ROUTES, NO MATCH ROUTES
        Next you see how the new Home and Users component share the same layout. 
     We can create a Styling Component that can be shared.
+    //Not allowed
+     <Routes>
+        <Layout>
+          <Route path="home" element={<Home />} />
+          <Route path="users" element={<Users />} />
+        </Layout>
+      </Routes>
+
+     #Nested route is allowed
+     <Routes>
+        <Route element={<Layout />}>
+          <Route path="home" element={<Home />} />
+          <Route path="users" element={<Users />} />
+        </Route>
+      </Routes>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Routes, Route, Outlet, Link } from "react-router-dom";
+import { Routes, Route, Outlet, NavLink, Link } from "react-router-dom";
 import "./App.css";
 
 function App() {
@@ -7,18 +7,15 @@ function App() {
     <div className="App">
       <h1>Welcome to React Router!</h1>
 
-      <Navigation />
-
-       {/* Next, we need to map the routes to an actual rendering by using 
-       React Router's Route component: 
-       
-      */}
-      
-      {/* Note "path" attribute of Route component is directly match
+      {/* Next, we need to map the routes to an actual rendering by using 
+       React Router's Route component: */}
+      {/* Note: "path" attribute of Route component is directly match
        "to" attribute of Link component*/}
+      {/* <Navigation /> - this was consolidated under Layout component*/}
       <Routes> 
-         {/* it is possible to nest Route Component */}
+         {/*Create Index Route as default for the / route*/}
          <Route element={<Layout />}>
+            <Route index element={<Home />} />
             <Route path="home" element={<Home /> } />
             <Route path="users" element={ <Users /> } />
             <Route path="about" element={<About />} />
@@ -28,30 +25,23 @@ function App() {
   );
 }
 
-const Navigation = () => {
-  return (
-    <nav
-      style={{
-        borderBottom: 'solid 1px',
-        paddingBottom: '1rem',
-      }}
-    >
-      {/* Note "to" attribute of Link compnent is directly match
-       "path" attribute of Route component
-
-        The essence of React Router is setting up Link components and matching them 
-      with Route components. 
-
-         Links have a many to one relationship to Routes, so that there can be multiple 
-      Links in your application linking to the same Route.
-
-       */}
-      <Link to="/home">Home</Link>
-      <Link to="/users">Users</Link>
-      <Link to="/about">About</Link>
-    </nav>
-  );
-};
+//Consolidate this under Layout Component
+// const Navigation = () => {
+//   return (
+//     <nav
+//       style={{
+//         borderBottom: 'solid 1px',
+//         paddingBottom: '1rem',
+//       }}
+//     >
+//       {/* Note that "to" attribute of Link component directly points
+//           to the "path" attribute of Route component */}
+//       <Link to="/home">Home</Link>
+//       <Link to="/users">Users</Link>
+//       <Link to="/about">About</Link>
+//     </nav>
+//   );
+// };
 
 const Home = () => {
   return (
@@ -71,7 +61,7 @@ const About = () => {
   return (
     <>
     <main>
-      <h2>Who are we?</h2>
+      <h2>About Page</h2>
       <p>
         That feels like an existential question, don't you
         think?
@@ -88,23 +78,50 @@ const About = () => {
 const Users = () => {
   return (
     <main style={{ padding: '1rem 0' }}>
-      <h2>Users</h2>
+      <h2>Users Page</h2>
     </main>
   );
 };
 
-//First let's create styling component
-//Now instead of using React's children in the Layout component, use React Router's 
-//Outlet component as equivalent:
+/*
+  First let's create styling component called "Layout"
+  In essence, the Outlet component in the Layout component inserts the 
+  matching child route (here: Home or Users component) of the parent route 
+  (here: Layout component).
+*/ 
+// const Layout = () => {
+//   return (
+//     <main style={{ padding: '1rem 0' }}>
+//       <Outlet />
+//     </main>
+//   );
+// };
 
-// const Layout = ({ children }) => {
-//   return <main style={{ padding: '1rem 0' }}>{children}</main>;
-// }
+//Move all App components implementation detail (headline, navigation) 
+//to layout component
+
 const Layout = () => {
-  return (
-    <main style={{ padding: '1rem 0' }}>
-      <Outlet />
-    </main>
+  const style = ({ isActive }) => ({
+    fontWeight: isActive ? 'bold' : 'normal',
+  });
+
+  return(
+    <>
+      <h1>React Router</h1>
+      <nav style={{borderBottom: 'solid 1px',  paddingBottom: '1rem', }}>
+         <NavLink to="/home" style={style}>Home</NavLink>
+         <NavLink to="/users" style={style}>Users</NavLink>
+         <NavLink to="/about" style={style}>About</NavLink>
+      </nav>
+
+      <main style={{ padding: '1rem 0' }}>
+        <Outlet />
+      </main>
+
+    </>
+     
   );
-};
+
+}
+
 export default App;
