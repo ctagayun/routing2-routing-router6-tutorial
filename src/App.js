@@ -19,11 +19,15 @@ function App() {
             <Route path="home" element={<Home /> } />
             <Route path="users" element={ <Users /> } />
             <Route path="about" element={<About />} />
+            <Route path="*" element={<NoMatch />} />
         </Route>
       </Routes>
     </div>
   );
 }
+const NoMatch = () => {
+  return (<p>There's nothing here: 404!</p>);
+};
 
 //Consolidate this under Layout Component
 // const Navigation = () => {
