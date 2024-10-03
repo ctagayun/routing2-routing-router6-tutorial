@@ -53,3 +53,6 @@ Completed Code: https://github.com/the-road-to-learn-react/react-router-6-exampl
           <Route path="users" element={<Users />} />
         </Route>
       </Routes>
+
+   5. React Router: Dynamic and Nested Routes
+     - Read nested routes in detail: https://www.robinwieruch.de/react-router-nested-routes/
