@@ -33,8 +33,36 @@ Completed Code: https://github.com/the-road-to-learn-react/react-router-6-exampl
       The essence of React Router: setting up Link components and matching them  
      with Route components. Links have a many to one relationship to Routes, 
      so that there can be multiple Links in your application linking to the same Route.
- 
- 
+    
+     - Navigation implements React Router's Link component to facilitate 
+     routing in React. 
+        const Navigation = () => {
+          return (
+            <nav
+              style={{
+                borderBottom: 'solid 1px',
+                paddingBottom: '1rem',
+              }}
+            >
+              <Link to="/home">Home</Link>
+              <Link to="/users">Users</Link>
+            </nav>
+          );
+       };
+
+     - Next, we need to map the routes to an actual rendering 
+     by using React Router's Route component in the Navigation (Link Component)
+     that will actually render the "routes" (path) by using React's Router
+     ROUTE COMPONENT. Look at Navigtion and Routes you will see the direct
+     match.
+
+        <Navigation />
+
+        <Routes>
+          <Route path="home" element={<Home />} />
+          <Route path="users" element={<Users />} />
+        </Routes>
+
   4. LAYOUT ROUTES, INDEX ROUTES, NO MATCH ROUTES
        Next you see how the new Home and Users component share the same layout. 
     We can create a Styling Component that can be shared.
@@ -56,3 +84,10 @@ Completed Code: https://github.com/the-road-to-learn-react/react-router-6-exampl
 
    5. React Router: Dynamic and Nested Routes
      - Read nested routes in detail: https://www.robinwieruch.de/react-router-nested-routes/
+
+   6. Relative Links in React Router
+
+      - go to https://www.robinwieruch.de/react-router/ 
+      - scroll to Relative Links in React Router
+
+      - The newest version of React Router comes with so-called Relative Links. We will examine this concept by looking at the Users component and its absolute /users/${user.id} path which is used for the Link component. 

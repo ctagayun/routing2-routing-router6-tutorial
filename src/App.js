@@ -81,6 +81,10 @@ const About = () => {
 // iterates over each user and returns JSX for it. In this case, it's a bit 
 // more than a mere list, because we add a React Router's Link component 
 //to the mix.
+
+//The newest version of React Router comes with so-called RELATIVE LINKS. 
+//We will examine this concept by looking at the Users component and its 
+//ABSOLUTE PATH /users/${user.id} which is used for the Link component.
 const Users = ({users}) => {
 
   return (
@@ -92,16 +96,28 @@ const Users = ({users}) => {
         <li key={user.id}>
           {/* Using the Link component we pass the userid to the path=users route.
               /users/${user.id} becomes a dynamic path because we iterate the list
+             
+             The newest version of React Router comes with so-called RELATIVE LINKS
           */}
-          <Link to={`/users/${user.id}`}>
+          <Link to={`/users/${user.id}`}> {/*This is nested absolute path. 
+                                      Since the Users component is used for 
+                                      the /users route, the Link in the Users 
+                                      component knows its current location and 
+                                      does not need to create the whole top-level 
+                                      part of the absolute path. Instead it 
+                                      knows about /users and just appends 
+                                      the :userId as relative path to it.*/}
             {user.fullName}
           </Link>
         </li>
       ))}
     </ul>
-      {/* We need the Outlet component here to render a nested routes.
-        we had to use the Outlet component in the parent route to render 
-        the matched child route. */}
+      {/* We need the Outlet component here to render the nested routes.
+        We had to use the Outlet component in the parent route to render 
+        the matched child route. 
+        OUTLET in essence, in the Layout component INSERTS THE MATCHING 
+        CHILD ROUTE (here: Home or Users component) of the parent route
+         (here: /home route). */}
       <Outlet />
   </>
   );
@@ -139,6 +155,13 @@ const Layout = () => {
       </nav>
 
       <main style={{ padding: '1rem 0' }}>
+        {/* We need the Outlet component here to render the nested routes.
+        We had to use the Outlet component in the parent route to render 
+        the matched child route. 
+        Outlet in essence, in the Layout component inserts the matching 
+        child route (defined by Link Component). 
+        In this case Home or Users component) of the parent route
+         (in this case the: Layout component). */}
         <Outlet />
       </main>
 
