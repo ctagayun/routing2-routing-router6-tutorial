@@ -1,22 +1,25 @@
 import * as React from "react";
-import { Routes, Route, Outlet, NavLink, Link, useParams } from "react-router-dom";
+import { Routes, Route, Outlet, NavLink, Link, useParams, useNavigate } from "react-router-dom";
 import "./App.css";
 
 const App = () => {
+  const navigate = useNavigate();
 
   // create a stateful users list using React.useState
-    const [users, setUsers] = React.useState([
-    { id: '1', fullName: 'Robin Wieruch' },
-    { id: '2', fullName: 'Sarah Finnley' },
-    { id: '3', fullName: 'Jennifer Roussin' },
-    { id: '4', fullName: 'Chito Tagayun' },
+    const [users, setUsers] = React.useState([  //initial value is a hard-coded list
+      { id: '1', fullName: 'Robin Wieruch' },
+      { id: '2', fullName: 'Sarah Finnley' },
+      { id: '3', fullName: 'Jennifer Roussin' },
+      { id: '4', fullName: 'Chito Tagayun' },
   ]);
 
   //Event handler for delete user
   const handleRemoveUser = (userId) => {
     setUsers((state) => state.filter((user) => user.id !== userId));
+
+    navigate('/users');
   };
-  
+
   return (
     <div className="App">
       <h1>Welcome to React Router!</h1>
@@ -36,6 +39,7 @@ const App = () => {
              we can nest it under a the "parent route" */}
             <Route path="users" element={<Users users={users} />}>
               <Route path=":userId" element={<User />} />
+              element={<User onRemoveUser={handleRemoveUser} />}
            </Route>
 
             <Route path="*" element={<NoMatch />} />
@@ -134,13 +138,15 @@ const Users = ({users}) => {
 /* Next, we are going to create the missing User component which 
   gets nested via the Outlet in the Users component whenever a user's 
   identifier matches in the URL.*/
-  const User = () => {
+  const User = ({ onRemoveUser }) => {
     const { userId } = useParams();
   
     return (
       <>
         <h2>User: {userId}</h2>
-  
+        <button type="button" className="btn btn-primary" onClick={() => onRemoveUser(userId)}>
+           Remove
+        </button>
         <Link to="/users">Back to Users</Link>
       </>
     );
