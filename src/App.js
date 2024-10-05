@@ -4,11 +4,19 @@ import "./App.css";
 
 const App = () => {
 
-  const users = [
+  // create a stateful users list using React.useState
+    const [users, setUsers] = React.useState([
     { id: '1', fullName: 'Robin Wieruch' },
     { id: '2', fullName: 'Sarah Finnley' },
-  ];
+    { id: '3', fullName: 'Jennifer Roussin' },
+    { id: '4', fullName: 'Chito Tagayun' },
+  ]);
 
+  //Event handler for delete user
+  const handleRemoveUser = (userId) => {
+    setUsers((state) => state.filter((user) => user.id !== userId));
+  };
+  
   return (
     <div className="App">
       <h1>Welcome to React Router!</h1>
