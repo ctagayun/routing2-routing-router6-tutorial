@@ -5,7 +5,7 @@ import "./App.css";
 const App = () => {
   const navigate = useNavigate();
 
-  // create a stateful users list using React.useState
+  // First we will create a stateful users list using React.useState
     const [users, setUsers] = React.useState([  //initial value is a hard-coded list
       { id: '1', fullName: 'Robin Wieruch' },
       { id: '2', fullName: 'Sarah Finnley' },
@@ -13,10 +13,12 @@ const App = () => {
       { id: '4', fullName: 'Chito Tagayun' },
   ]);
 
-  //Event handler for delete user
+  //Second add an Event handler for DELETE user
   const handleRemoveUser = (userId) => {
     setUsers((state) => state.filter((user) => user.id !== userId));
 
+    //Lastly we take the user back to "Users" Component page. However, if the 
+    //user would be an entity in a database, you would have to make an asynchronous request to delete it.
     navigate('/users');
   };
 
@@ -31,15 +33,13 @@ const App = () => {
          <Route element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="home" element={<Home /> } />
-
-            {/* Because the Users component is passed users list as prop
-             and iterates through the list it and create another path 
-             when :userid is passed thereby making a dynamic route (or path).
-             And because another path is created when we pass the :userid 
-             we can nest it under a the "parent route" */}
             <Route path="users" element={<Users users={users} />}>
-              <Route path=":userId" element={<User />} />
-              element={<User onRemoveUser={handleRemoveUser} />}
+                {/*Third pass the event handler as callback handler to the USER component (not USERS), we can use it there as inline handler
+                   to remove the specific USER by identifier:  */}
+                <Route
+                  path=":userId"
+                  element={<User onRemoveUser={handleRemoveUser} />}
+               />
            </Route>
 
             <Route path="*" element={<NoMatch />} />
@@ -106,14 +106,10 @@ const Users = ({users}) => {
     <ul>
       {users.map((user) => (
         <li key={user.id}>
-          {/* Using the Link component we pass the userid to the path=users route.
-              /users/${user.id} becomes a dynamic path because we iterate the list
-             
-             The newest version of React Router comes with so-called RELATIVE LINKS
-          */}
-          <Link to={`/users/${user.id}`}> {/*This is nested absolute path. 
-                                      Since the Users component is used for 
-                                      the /users route, the Link in the Users 
+          {/*This is relative linking  see notes: routing2-routing-router6-tutorial-copy4-relative-links-in-react-router*/}
+          <Link to={`/users/${user.id}`}> {/*This is NESTED ABSOLUTE PATH. 
+                                      Since the Users component (e.g. /users/$) is used for 
+                                      the /users route (e.g. Link to={`/USERS/${user.id}), the Link in the Users 
                                       component knows its current location and 
                                       does not need to create the whole top-level 
                                       part of the absolute path. Instead it 
@@ -144,6 +140,7 @@ const Users = ({users}) => {
     return (
       <>
         <h2>User: {userId}</h2>
+        {/*After we have passed the event handler as callback handler to the User component, we can use it there as inline handler to remove the specific user by identifier: */}
         <button type="button" className="btn btn-primary" onClick={() => onRemoveUser(userId)}>
            Remove
         </button>

@@ -97,14 +97,17 @@ Completed Code: https://github.com/the-road-to-learn-react/react-router-6-exampl
       - see demo: routing2-routing-router6-tutorial-copy4-relative-links-in-react-router
        
    7. Declarative and Programmatic Navigation
+       - see demo routing2-routing-router6-tutorial-copy5-programmatic-navigation
        - scroll to Declarative and Programmatic Navigation
 
        - So far, we have only used declarative navigation when using the 
        Link or NavLink component. However, on certain occasions you want to 
        be able to navigate a user programmatically via JavaScript. We will 
        showcase this scenario by implementing a feature where it's possible 
-       to delete a user in the User component. After the deletion, the user 
-       should be navigated away from the User component to the 
+       to delete a user in the User component. 
+       
+       Scenario: After the deletion, the user 
+       should be navigated away from the User component and back to the 
        Users component (from /users/:userId to /users).
 
          Note: Read up Lazy Loading - https://www.robinwieruch.de/react-router-lazy-loading/
