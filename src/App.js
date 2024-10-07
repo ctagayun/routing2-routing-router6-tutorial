@@ -36,10 +36,8 @@ const App = () => {
             <Route path="users" element={<Users users={users} />}>
                 {/*Third pass the event handler as callback handler to the USER component (not USERS), we can use it there as inline handler
                    to remove the specific USER by identifier:  */}
-                <Route
-                  path=":userId"
-                  element={<User onRemoveUser={handleRemoveUser} />}
-               />
+                <Route  path=":userId/:userName" element={<User onRemoveUser={handleRemoveUser} />}
+                />
            </Route>
 
             <Route path="*" element={<NoMatch />} />
@@ -101,21 +99,17 @@ const Users = ({users}) => {
 
   return (
     <>
-    <h2>Users</h2>
+    <h2>Users List</h2>
 
     <ul>
       {users.map((user) => (
         <li key={user.id}>
           {/*This is relative linking  see notes: routing2-routing-router6-tutorial-copy4-relative-links-in-react-router*/}
-          <Link to={`/users/${user.id}`}> {/*This is NESTED ABSOLUTE PATH. 
-                                      Since the Users component (e.g. /users/$) is used for 
-                                      the /users route (e.g. Link to={`/USERS/${user.id}), the Link in the Users 
-                                      component knows its current location and 
-                                      does not need to create the whole top-level 
-                                      part of the absolute path. Instead it 
-                                      knows about /users and just appends 
-                                      the :userId as relative path to it.*/}
-            {user.fullName}
+          {/*<Link to={`/users/${user.id}`}>  is NESTED ABSOLUTE PATH.  Since the Users component (e.g. /users/$) is used for the
+            /users route (e.g. Link to={`/USERS/${user.id}), the Link in the Users component knows its current location and does 
+            not need to create the whole top-level part of the absolute path. Instead it knows about /users and just appends the :userId as relative path to it.*/}
+          <Link to={`/users/${user.id}/${user.fullName}`}> {/* Passing multiple params in the path. Then go to route in line 36 )which is nested to ROute in line 39*/}
+                {user.fullName}  {/*What is this for */}
           </Link>
         </li>
       ))}
@@ -131,12 +125,16 @@ const Users = ({users}) => {
   );
 };
 
-/* Next, we are going to create the missing User component which 
-  gets nested via the Outlet in the Users component whenever a user's 
-  identifier matches in the URL.*/
+
   const User = ({ onRemoveUser }) => {
-    const { userId } = useParams();
-  
+
+    //useParams Hook to get the respective userId (which equals :userId) from the URL:
+    
+    //const { userId, userName } = useParams(); //Example extracting multiple params from path
+    //console.log(`useParams= ${userId}, ${userName}`);
+
+    const { userId } = useParams(); //Example extracting from path with a single param
+    console.log(`useParams= ${userId}`);
     return (
       <>
         <h2>User: {userId}</h2>
@@ -159,7 +157,7 @@ const Layout = () => {
 
   return(
     <>
-      <h1>React Router</h1>
+      <h2>Layout Component - Using useNavigate Hook </h2>
       <nav style={{borderBottom: 'solid 1px',  paddingBottom: '1rem', }}>
          <NavLink to="/home" style={style}>Home</NavLink>
          <NavLink to="/users" style={style}>Users</NavLink>
